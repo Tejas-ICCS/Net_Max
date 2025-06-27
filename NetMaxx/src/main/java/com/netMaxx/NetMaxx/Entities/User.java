@@ -21,5 +21,7 @@ public class User {
     private String password;
     private String mobileNo;
     @Column(columnDefinition = "LONGBLOB")
-    private ByteArray[] imageUrl;
+    @Lob
+    private byte[] imageUrl;
+
 }
