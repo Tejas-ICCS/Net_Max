@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.eclipse.angus.mail.iap.ByteArray;
 
+import java.util.Date;
+import java.util.Map;
+
 @NoArgsConstructor
 @Getter
 @Setter
@@ -23,5 +26,5 @@ public class User {
     @Column(columnDefinition = "LONGBLOB")
     @Lob
     private byte[] imageUrl;
-
+    private Map<String, Date> giftclaim;
 }
