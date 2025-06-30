@@ -21,7 +21,7 @@ public class User {
     @Column(unique = true)
     private String email;
     @Column(unique = true)
-    private String username;
+    private String userName;
     private String password;
     private String mobile;
     @Column(columnDefinition = "LONGBLOB")
