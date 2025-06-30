@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.eclipse.angus.mail.iap.ByteArray;
 
 import java.util.Date;
 import java.util.Map;
@@ -17,12 +16,14 @@ public class User {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private long id;
+    @Column
+    private String name;
     @Column(unique = true)
-    private String emailID;
+    private String email;
     @Column(unique = true)
     private String username;
     private String password;
-    private String mobileNo;
+    private String mobile;
     @Column(columnDefinition = "LONGBLOB")
     @Lob
     private byte[] imageUrl;
