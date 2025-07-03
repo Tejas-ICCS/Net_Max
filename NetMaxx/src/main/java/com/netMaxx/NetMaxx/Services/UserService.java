@@ -1,12 +1,13 @@
 package com.netMaxx.NetMaxx.Services;
 
 import com.netMaxx.NetMaxx.Entities.User;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface UserService {
-    public List<User> getAllUser();
-    public  void saveUser(User user);
-    public User getUser(long id,String username,String email);
-    public void deleteUser(long id);
+    public String registerUser(String email,String name, String pass, String userName, String mobile, MultipartFile image) throws IOException;
+     public boolean isUserNameAvailable(String userName);
+    public boolean isEmailAvailable(String email);
 }

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>User Registration</title>
+    <style>
+        body {
+          font-family: Arial, sans-serif;
+          background: #f0f2f5;
+          margin: 0;
+          padding: 0;
+        }
+
+        .container {
+          max-width: 400px;
+          margin: auto;
+          background: white;
+          padding: 20px;
+          margin-top: 30px;
+          border-radius: 10px;
+          box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+          text-align: center;
+          margin-bottom: 20px;
+        }
+
+        label {
+          display: block;
+          margin-bottom: 5px;
+          font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="file"] {
+          width: 100%;
+          padding: 10px;
+          margin-bottom: 15px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+        }
+
+        .input-group {
+          position: relative;
+        }
+
+        .input-group span {
+          position: absolute;
+          right: 10px;
+          top: 50%;
+          transform: translateY(-50%);
+          font-size: 18px;
+        }
+
+        .valid {
+          color: green;
+        }
+
+        .invalid {
+          color: red;
+        }
+
+        button {
+          width: 100%;
+          padding: 12px;
+          background-color: #28a745;
+          color: white;
+          font-size: 16px;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+        }
+
+        button:hover {
+          background-color: #218838;
+        }
+
+        #responseMsg {
+          margin-top: 15px;
+          text-align: center;
+          font-weight: bold;
+        }
+
+        @media (max-width: 480px) {
+          .container {
+            margin: 15px;
+          }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <form id="registrationForm">
+        <h2>User Registration</h2>
+
+        <label for="name">Full Name:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="email">Email:</label>
+        <div class="input-group">
+            <input type="email" id="email" name="email" required>
+            <span id="email-status"></span>
+        </div>
+
+        <label for="userName">Username:</label>
+        <div class="input-group">
+            <input type="text" id="userName" name="userName" required>
+            <span id="username-status"></span>
+        </div>
+
+        <label for="pass">Password:</label>
+        <input type="password" id="pass" name="pass" required>
+
+        <label for="mobile">Mobile:</label>
+        <input type="text" id="mobile" name="mobile" required>
+
+        <label for="image">Upload Image:</label>
+        <input type="file" id="image" name="image" accept="image/*" required>
+
+        <button type="submit">Register</button>
+        <p id="responseMsg"></p>
+    </form>
+</div>
+
+<script>
+    const usernameInput = document.getElementById("userName");
+    const emailInput = document.getElementById("email");
+
+    usernameInput.addEventListener("input", () => {
+      const username = usernameInput.value;
+      fetch(`http://localhost:8080/user/check-username?userName=${username}`)
+        .then(res => res.json())
+        .then(data => {
+          const status = document.getElementById("username-status");
+          status.innerText = data.available ? '✔' : '✖';
+          status.className = data.available ? 'valid' : 'invalid';
+        });
+    });
+
+    emailInput.addEventListener("input", () => {
+      const email = emailInput.value;
+      fetch(`http://localhost:8080/user/check-email?email=${email}`)
+        .then(res => res.json())
+        .then(data => {
+          const status = document.getElementById("email-status");
+          status.innerText = data.Available ? '✔' : '✖';
+          status.className = data.Available ? 'valid' : 'invalid';
+        });
+    });
+
+    document.getElementById("registrationForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const form = document.getElementById("registrationForm");
+      const formData = new FormData(form);
+
+      fetch("http://localhost:8080/user/register", {
+        method: "POST",
+        body: formData
+      })
+        .then(response => {
+          if (response.ok) return response.text();
+          throw new Error("Registration failed");
+        })
+        .then(data => {
+          document.getElementById("responseMsg").innerText = data;
+          form.reset();
+          document.getElementById("username-status").innerText = "";
+          document.getElementById("email-status").innerText = "";
+        })
+        .catch(error => {
+          document.getElementById("responseMsg").innerText = error.message;
+        });
+    });
+</script>
+
+</body>
+</html>

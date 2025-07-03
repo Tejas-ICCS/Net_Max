@@ -11,4 +11,9 @@ public interface UserRepostitory extends JpaRepository<User,Long> {
     public List<User> getAllUsers();
 
     public List<User> findByUserNameContainingOrEmailContainingOrMobileContaining(String userName, String email, String mobile);
+
+    public Boolean existByEmail(String email);
+
+    public Boolean existByUserName(String userName);
+
 }
